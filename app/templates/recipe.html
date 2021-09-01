@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+        <!-- Page Header-->
+        <header class="masthead" style="background-image: url({{ url_for('static', filename='images/' + banner) }})">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="post-heading">
+                            <h1>{{ data['name'] }}</h1>
+                            <span class="meta">
+                                Posted by
+                                <a href="#!">Admin</a>
+                                on {{ data['date_modified'] }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Post Content-->
+        <article class="mb-4">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <h2>Ingredients</h2>
+                        <ul>
+                            {% for ingredient in data['ingredients'] %}
+                                {% if ingredient[0] == '*' %}
+                                    <p style="margin-left: -20px; margin-bottom: -1px;"><b>{{ ingredient[1:] }}</b></p>
+                                {% else %}
+                                    <li>{{ ingredient }}</li>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                        <h2>Instructions</h2>
+                        <ol>
+                            {% for step in data['instructions'] %}
+                                {% if step[0] == '*' %}
+                                    <p style="margin-left: -20px; margin-bottom: -1px;"><b>{{ step[1:] }}</b></p>
+                                {% else %}
+                                    <li>{{ step }}</li>
+                                {% endif %}
+                            {% endfor %}
+                        </ol>
+                        {% if current_user.is_authenticated %}
+                        <br><br><br>
+                        <a href="{{ url_for('update', id=data['id']) }}" class="btn btn-secondary text-uppercase" id="delete">Update Recipe</a>
+                        <a href="{{ url_for('delete', id=data['id']) }}" class="btn btn-danger text-uppercase" id="delete">Delete Recipe</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </article>
+{% endblock %}
