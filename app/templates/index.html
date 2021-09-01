@@ -30,8 +30,10 @@
                             on {{ recipe['date_modified'] }}
                         </p>
                     </div>
-                    <!-- Divider-->
-                    <hr class="my-4" />
+                    {% if not loop.last %}
+                        <!-- Divider-->
+                        <hr class="my-4" />
+                    {% endif %}
                     {% endfor %}
                 </div>
             </div>
