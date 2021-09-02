@@ -27,7 +27,7 @@
                         <ul>
                             {% for ingredient in data['ingredients'] %}
                                 {% if ingredient[0] == '*' %}
-                                    <p style="margin-left: -25px; margin-bottom: -1px;"><b>{{ ingredient[1:] }}</b></p>
+                                    <p style="margin-left: -20px; margin-bottom: -1px;"><b>{{ ingredient[1:] }}</b></p>
                                 {% else %}
                                     <li>{{ ingredient }}</li>
                                 {% endif %}
