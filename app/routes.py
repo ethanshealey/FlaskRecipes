@@ -13,13 +13,25 @@ def index():
     data = res.json()
     return render_template('index.html', title='Cooking', data=data)
 
-@app.route('/search')
+@app.route('/search', methods=['GET', 'POST'])
 def search():
     banner = 'bg' + str(randint(1,9)) + '.jpg'
     form=SearchForm()
     if form.validate_on_submit():
-        return '/search has not yet been made'
-    return render_template('search.html', title='Search', form=form, banner=banner)
+        query = form.item.data.split(' ')
+        res = requests.get("http://api.ethanshealey.com/recipes")
+        data = res.json()
+        matches = []
+        counter = 0
+        for recipe in data:
+            print(recipe)
+            for q in query:
+                print(q)
+                if q.lower() in recipe['name'].lower():
+                    matches.append(recipe)
+                    break
+    
+    return render_template('search.html', title='Search', form=form, banner=banner, results=matches)
 
 @app.route('/recipe/<item>/<id>')
 def recipe(item, id):
