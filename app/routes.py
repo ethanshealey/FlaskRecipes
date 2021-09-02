@@ -17,6 +17,8 @@ def index():
 def search():
     banner = 'bg' + str(randint(1,9)) + '.jpg'
     form=SearchForm()
+    if form.validate_on_submit():
+        return '/search has not yet been made'
     return render_template('search.html', title='Search', form=form, banner=banner)
 
 @app.route('/recipe/<item>/<id>')
