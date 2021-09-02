@@ -37,7 +37,9 @@
                         <ol>
                             {% for step in data['instructions'] %}
                                 {% if step[0] == '*' %}
+                                    </ol>
                                     <p style="margin-left: -20px; margin-bottom: -1px;"><b>{{ step[1:] }}</b></p>
+                                    <ol>
                                 {% else %}
                                     <li>{{ step }}</li>
                                 {% endif %}
