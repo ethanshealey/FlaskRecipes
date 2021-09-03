@@ -40,6 +40,7 @@ def recipe(item, id):
     return render_template('recipe.html', title=data['name'], data=data, banner=banner)
 
 @app.route('/recipe/delete/<id>')
+@login_required
 def delete(id):
     res = requests.delete(f"http://api.ethanshealey.com/recipes/{id}")
     return redirect(url_for('index'))
