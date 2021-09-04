@@ -27,14 +27,14 @@ def search():
         for recipe in data:
             for q in query:
                 if q.lower() in recipe['name']:
-                    item = tuple(recipe.items)
+                    item = tuple(recipe.items())
                     if item not in seen:
                         seen.add(item)
                         matches.append(recipe)
                         break
                 for ing in recipe['ingredients']:
                     if q.lower() in ing:
-                        item = tuple(recipe.items)
+                        item = tuple(recipe.items())
                         if item not in seen:
                             seen.add(item)
                             matches.append(recipe)
