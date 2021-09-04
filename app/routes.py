@@ -18,18 +18,40 @@ def search():
     banner = 'bg' + str(randint(1,9)) + '.jpg'
     form=SearchForm()
     matches = []
+    seen = set()
+    if form.validate_on_submit():
+        query = form.item.data.split(' ')
+        res = requests.get('http://api.ethanshealey.com/recipes')
+        data = res.json()
+        i = 0
+        for recipe in data:
+            for q in query:
+                if q.lower() in recipe['name']:
+                    item = tuple(recipe.items)
+                    if item not in seen:
+                        seen.add(item)
+                        matches.append(recipe)
+                        break
+                for ing in recipe['ingredients']:
+                    if q.lower() in ing:
+                        item = tuple(recipe.items)
+                        if item not in seen:
+                            seen.add(item)
+                            matches.append(recipe)
+                            break
+    '''
     if form.validate_on_submit():
         query = form.item.data.split(' ')
         res = requests.get("http://api.ethanshealey.com/recipes")
         data = res.json()
         counter = 0
         for recipe in data:
-            print(recipe)
             for q in query:
-                print(q)
                 if q.lower() in recipe['name'].lower():
                     matches.append(recipe)
                     break
+    '''
+
     return render_template('search.html', title='Search', form=form, banner=banner, results=matches)
 
 @app.route('/recipe/<item>/<id>')
