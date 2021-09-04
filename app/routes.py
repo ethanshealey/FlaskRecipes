@@ -39,6 +39,15 @@ def recipe(item, id):
     banner = 'bg' + str(randint(1,9)) + '.jpg'
     return render_template('recipe.html', title=data['name'], data=data, banner=banner)
 
+@app.route('/recipe/update/<id>')
+@login_required
+def update(id):
+    banner = 'bg' + str(randint(1,9)) + '.jpg'
+    res = requests.get(f'http://api.ethanshealey.com/recipes/{id}')
+    data = res.json()
+    return render_template('update.html', title='Update Recipe', data=data, id=id, banner=banner)
+
+
 @app.route('/recipe/delete/<id>')
 @login_required
 def delete(id):
@@ -51,15 +60,25 @@ def upload():
     banner = 'bg' + str(randint(1,9)) + '.jpg'
     return render_template('upload.html', title='Add a Recipe', banner=banner)
 
-@app.route('/update/<id>')
+@app.route('/handle_update/<id>', methods=['GET', 'POST'])
 @login_required
-def update(id):
-    banner = 'bg' + str(randint(1,9)) + '.jpg'
-    res = requests.get(f"http://api.ethanshealey.com/recipes/{id}")
-    data = res.json()
-    print(data)
-    return render_template('upload.html', title='Update a Recipe', banner=banner, data=data)
-
+def handle_update(id):
+    if request.method == 'POST':
+        data = request.form
+        payload = {'name': '', 'ingredients': [], 'instructions': [], 'cook_time': ''}
+        for key,value in data.items():
+            if 'name' in key:
+                payload['name'] = value.replace("'","''")
+            elif 'ingredient' in key:
+                payload['ingredients'].append(value.replace("'","''"))
+            elif 'instruction' in key:
+                payload['instructions'].append(value.replace("'","''"))
+            elif 'cook_time' in key:
+                payload['cook_time'] = value.replace("'","''")
+        res = requests.post(f'http://api.ethanshealey.com/recipes/{id}', json=payload)
+        return redirect(url_for('index'))
+    else: 
+        return redirect(url_for('index'))
 
 @app.route('/handle_upload', methods=['GET', 'POST'])
 @login_required
@@ -78,9 +97,7 @@ def handle_upload():
             elif 'cook_time' in key:
                 payload['cook_time'] = value
 
-        print(payload)
         res = requests.post('http://api.ethanshealey.com/recipes', json=payload)
-        print(res.text)
     return redirect(url_for('index'))
 
 @app.route('/login', methods=['GET', 'POST'])

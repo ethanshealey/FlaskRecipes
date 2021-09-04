@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Page Header-->
+<script
+    src="https://code.jquery.com/jquery-1.12.4.min.js"
+    integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+    crossorigin="anonymous"></script>
+    
+    <header class="masthead" style="background-image: url({{ url_for('static', filename='images/' + banner) }})">
+        <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="site-heading">
+                    <h1>Update {{ data['name'] }}</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- Post Content-->
+<article class="mb-4">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <form id="contactForm" action="{{ url_for('handle_update', id=id) }}" method="POST">
+                    <h2>Recipe Name</h2>
+                    <div class="form-floating">
+                        <input class="form-control" id="name" name="recipe_name" type="text" placeholder="Enter your recipe name..." value="{{ data['name'] }}" data-sb-validations="required" />
+                        <label for="name">Recipe Name</label>
+                        <div class="invalid-feedback" data-sb-feedback="name:required">A recipe name is required.</div>
+                    </div>
+                    <!-- Divider-->
+                    <br />
+                    <h2>Ingredients</h2>
+                    <div id="ingredients">
+                        {% for ingredient in data['ingredients'] %}
+                        <div class="form-floating">
+                            <input class="form-control" id="name" name="ingredient_{{ loop.index }}" type="text" placeholder="Enter your ingredient..." value="{{ ingredient }}" data-sb-validations="required" />
+                            <label for="name">Ingredient</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <br>
+                    <div class="btn btn-secondary text-uppercase" id="add_ingredient">Add ingredient</div>
+                    <div class="btn btn-danger text-uppercase" id="delete_ingredient">Remove ingredient</div>
+                    <br>
+                    <!-- Divider-->
+                    <br />
+                    <h2>Instructions</h2>
+                    <div id="instructions">
+                        {% for instruction in data['instructions'] %}
+                        <div class="form-floating">
+                            <input class="form-control" id="name" type="text" name="instruction_{{ loop.index }}" placeholder="Enter your instruction..." value="{{ instruction }}" data-sb-validations="required" />
+                            <label for="name">Step</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <br>
+                    <div class="btn btn-secondary text-uppercase" id="add_instruction">Add instruction</div>
+                    <div class="btn btn-danger text-uppercase" id="delete_instruction">Remove instruction</div>
+                    <br>
+                    <br />
+                    
+                    <div class="form-floating">
+                        <input class="form-control" id="name" type="text" name="cook_time" placeholder="Enter the Cook Time..." value="{{ data['cook_time'] }}" data-sb-validations="required" />
+                        <label for="name">Cook Time</label>
+                    </div>
+                    
+                    <br />
+                    <!-- Submit Button-->
+                    <button class="btn btn-primary text-uppercase" id="submitButton" type="submit">Send</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</article>
+
+<script>
+    $(document).ready(() => {
+        var count_item = parseInt("{{ data['ingredients'] | length }}");
+
+        if(count_item == 1)
+            $("#delete_ingredient").addClass("disabled")
+
+        $("#add_ingredient").on("click", () => {
+            count_item += 1;
+            if(count_item > 1) {
+                $("#delete_ingredient").removeClass("disabled")
+            }
+            $(`<div class="form-floating" id="ingredient_${count_item}">
+                    <input class="form-control" id="name" name="ingredient_${count_item}" type="text" placeholder="Enter your ingredient..." data-sb-validations="required" />
+                    <label for="name">Ingredient</label>
+                </div>`).appendTo("#ingredients")
+        });
+        $("#delete_ingredient").on("click", () => {
+            if(count_item > 1) {
+                count_item -= 1;
+                $('#ingredients').children().last().remove();
+                if(count_item < 2) {
+                    $("#delete_ingredient").addClass("disabled")
+                }
+            }
+        })
+    })
+</script>
+<script>
+    $(document).ready(() => {
+        var count_item = parseInt("{{ data['instructions'] | length }}");
+
+        if(count_item == 1)
+            $("#delete_instruction").addClass("disabled")
+
+        $("#add_instruction").on("click", () => {
+            count_item += 1;
+            if(count_item > 1) {
+                $("#delete_instruction").removeClass("disabled")
+            }
+            $(`<div class="form-floating" id="instruction_${count_item}">
+                    <input class="form-control" id="name" name="instruction${count_item}" type="text" placeholder="Enter your instruction..." data-sb-validations="required" />
+                    <label for="name">Step</label>
+                </div>`).appendTo("#instructions")
+        });
+        $("#delete_instruction").on("click", () => {
+            if(count_item > 1) {
+                count_item -= 1;
+                $('#instructions').children().last().remove();
+                if(count_item < 2) {
+                    $("#delete_instruction").addClass("disabled")
+                }
+            }
+        })
+    })
+</script>
+{% endblock %}
