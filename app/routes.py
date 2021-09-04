@@ -76,9 +76,7 @@ def handle_update(id):
             elif 'cook_time' in key:
                 payload['cook_time'] = value.replace("'","''")
         res = requests.post(f'http://api.ethanshealey.com/recipes/{id}', json=payload)
-        return redirect(url_for('index'))
-    else: 
-        return redirect(url_for('index'))
+    return redirect(url_for('index'))
 
 @app.route('/handle_upload', methods=['GET', 'POST'])
 @login_required
@@ -89,13 +87,13 @@ def handle_upload():
 
         for key,value in data.items():
             if 'name' in key:
-                payload['name'] = value
+                payload['name'] = value.replace("'","''")
             elif 'ingredient' in key:
-                payload['ingredients'].append(value)
+                payload['ingredients'].append(value.replace("'","''"))
             elif 'instruction' in key:
-                payload['instructions'].append(value)
+                payload['instructions'].append(value.replace("'","''"))
             elif 'cook_time' in key:
-                payload['cook_time'] = value
+                payload['cook_time'] = value.replace("'","''")
 
         res = requests.post('http://api.ethanshealey.com/recipes', json=payload)
     return redirect(url_for('index'))
