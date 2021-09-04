@@ -35,7 +35,7 @@
                     <h2>Ingredients</h2>
                     <div id="ingredients">
                         <div class="form-floating">
-                            <input class="form-control" id="name" name="ingredient_1" type="text" placeholder="Enter your ingredient..." data-sb-validations="required" />
+                            <input class="form-control" id="add_ing" name="ingredient_1" type="text" placeholder="Enter your ingredient..." data-sb-validations="required" />
                             <label for="name">Ingredient</label>
                         </div>
                     </div>
@@ -72,6 +72,15 @@
     </div>
 </article>
 
+<script>
+    var add = document.getElementById('add_ing');
+    add.addEventListener('keyup', (e) => {
+        if(e.keyCode == 13) {
+            e.preventDefault();
+            document.getElementById('add_ingredient').click()
+        }
+    })
+</script>
 <script>
     $(document).ready(() => {
         var count_item = 1;
