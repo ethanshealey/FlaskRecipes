@@ -25,6 +25,8 @@ def search():
         data = res.json()
         i = 0
         for recipe in data:
+            recipe['ingredients'] = tuple(recipe['ingredients'])
+            recipe['instructions'] = tuple(recipe['instructions'])
             for q in query:
                 if q.lower() in recipe['name']:
                     item = tuple(recipe.items())
