@@ -28,14 +28,14 @@ def search():
             recipe['ingredients'] = tuple(recipe['ingredients'])
             recipe['instructions'] = tuple(recipe['instructions'])
             for q in query:
-                if q.lower() in recipe['name']:
+                if q.lower() in recipe['name'].lower():
                     item = tuple(recipe.items())
                     if item not in seen:
                         seen.add(item)
                         matches.append(recipe)
                         break
                 for ing in recipe['ingredients']:
-                    if q.lower() in ing:
+                    if q.lower() in ing.lower():
                         item = tuple(recipe.items())
                         if item not in seen:
                             seen.add(item)
