@@ -37,29 +37,32 @@
                         {% endif %}
                     </div>
                     {% endfor %}
-                    <div class="d-flex justify-content-end mb-4" id="show_all"><a class="btn btn-primary text-uppercase" href="#">All Recipes →</a></div>
+                    <div class="d-flex justify-content-end mb-4" id="show_all"><a class="btn btn-primary text-uppercase" href="#">More Recipes →</a></div>
                 </div>
             </div>
         </div>
         <script>
             $(document).ready(() => {
+                let count = 5;
                 const children = $(".inf-scroll-cnt").children()
                 for(let i = 0; i < children.length; i++) {
                     let id = children[i].id.split('_')[1]
-                    if(id > 5) {
+                    if(id > count) {
                         $(`#recipe_${id}`).hide()
                     }
                 }
                 $("#show_all").on('click', ($e) => {
                     $e.preventDefault()
-                    $("#show_all").remove()
+                    count += 5;
                     const children = $(".inf-scroll-cnt").children()
                     for(let i = 0; i < children.length; i++) {
                         let id = children[i].id.split('_')[1]
-                        if(id > 5) {
+                        if(id <= count) {
                             $(`#recipe_${id}`).show()
                         }
                     }
+                    if(count > children.length)
+                        $("#show_all").remove()
                 })
             })
         </script>
