@@ -88,7 +88,7 @@ def handle_update(id):
             elif 'cook_time' in key:
                 payload['cook_time'] = value.replace("'","''")
         headers = {
-            'Authorization': 'Bearer ' + os.environ['TOKEN']
+            'Authorization': os.environ['TOKEN']
         }
         res = requests.post(f'http://api.ethanshealey.com/recipes/{id}', json=payload, headers=headers)
     return redirect(url_for('index'))
@@ -111,7 +111,7 @@ def handle_upload():
                 payload['cook_time'] = value.replace("'","''")
 
         headers = {
-            'Authorization': 'Bearer ' + os.environ['TOKEN']
+            'Authorization': os.environ['TOKEN']
         }
         res = requests.post('http://api.ethanshealey.com/recipes', json=payload, headers=headers)
     return redirect(url_for('index'))
