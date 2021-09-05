@@ -17,23 +17,25 @@
         <!-- Main Content-->
         <div class="container px-4 px-lg-5">
             <div class="row gx-4 gx-lg-5 justify-content-center">
-                <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="col-md-10 col-lg-8 col-xl-7 inf-scroll-cnt">
                     {% for recipe in data %}
+                    <div id="recipe_{{ loop.index }}">
                     <!-- Post preview-->
-                    <div class="post-preview">
-                        <a href="{{ url_for('recipe', item=recipe['name'], id=recipe['id']) }}">
-                            <h2 class="post-title">{{ recipe['name'] }}</h2>
-                        </a>
-                        <p class="post-meta">
-                            Posted by
-                            <a href="#!">Admin</a>
-                            on {{ recipe['date_modified'] }}
-                        </p>
+                        <div class="post-preview">
+                            <a href="{{ url_for('recipe', item=recipe['name'], id=recipe['id']) }}">
+                                <h2 class="post-title">{{ recipe['name'] }}</h2>
+                            </a>
+                            <p class="post-meta">
+                                Posted by
+                                <a href="#!">Admin</a>
+                                on {{ recipe['date_modified'] }}
+                            </p>
+                        </div>
+                        {% if not loop.last %}
+                            <!-- Divider-->
+                            <hr class="my-4" />
+                        {% endif %}
                     </div>
-                    {% if not loop.last %}
-                        <!-- Divider-->
-                        <hr class="my-4" />
-                    {% endif %}
                     {% endfor %}
                 </div>
             </div>
