@@ -25,8 +25,7 @@ def search():
         data = res.json()
         i = 0
         for recipe in data:
-            recipe['ingredients'] = tuple(recipe['ingredients'])
-            recipe['instructions'] = tuple(recipe['instructions'])
+            recipe['ingredients'], recipe['instructions'] = tuple(recipe['ingredients']), tuple(recipe['instructions'])
             for q in query:
                 if q.lower() in recipe['name'].lower():
                     item = tuple(recipe.items())
@@ -41,18 +40,6 @@ def search():
                             seen.add(item)
                             matches.append(recipe)
                             break
-    '''
-    if form.validate_on_submit():
-        query = form.item.data.split(' ')
-        res = requests.get("http://api.ethanshealey.com/recipes")
-        data = res.json()
-        counter = 0
-        for recipe in data:
-            for q in query:
-                if q.lower() in recipe['name'].lower():
-                    matches.append(recipe)
-                    break
-    '''
 
     return render_template('search.html', title='Search', form=form, banner=banner, results=matches)
 
