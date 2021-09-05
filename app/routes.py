@@ -2,16 +2,17 @@ from app import app, db
 from flask import render_template, flash, redirect, url_for, request, jsonify
 from flask_login import login_required
 from app.form import LoginForm, SearchForm
-import requests
 from flask_login import current_user, login_user, logout_user
 from app.models import User
 from random import randint
+import requests, datetime
 
 @app.route('/')
 def index():
     res = requests.get("http://api.ethanshealey.com/recipes")
     data = res.json()
-    return render_template('index.html', title='Cooking', data=data)
+    data.sort(key = lambda x: datetime.datetime.strptime(x['date_modified'], '%Y-%m-%d'))
+    return render_template('index.html', title='Cooking', data=data[::-1])
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
