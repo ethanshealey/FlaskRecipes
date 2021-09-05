@@ -55,7 +55,9 @@
                     const children = $(".inf-scroll-cnt").children()
                     for(let i = 0; i < children.length; i++) {
                         let id = children[i].id.split('_')[1]
-                        $(`#recipe_${id}`).show()
+                        if(id > 5) {
+                            $(`#recipe_${id}`).show()
+                        }
                     }
                 })
             })
