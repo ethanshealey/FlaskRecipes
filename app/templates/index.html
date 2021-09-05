@@ -50,7 +50,8 @@
                         $(`#recipe_${id}`).hide()
                     }
                 }
-                $("#show_all").on('click', () => {
+                $("#show_all").on('click', ($e) => {
+                    $e.preventDefault()
                     $("#show_all").remove()
                     const children = $(".inf-scroll-cnt").children()
                     for(let i = 0; i < children.length; i++) {
