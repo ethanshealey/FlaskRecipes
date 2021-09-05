@@ -5,7 +5,7 @@ from app.form import LoginForm, SearchForm
 from flask_login import current_user, login_user, logout_user
 from app.models import User
 from random import randint
-import requests, datetime
+import requests, datetime, os
 
 @app.route('/')
 def index():
@@ -87,7 +87,10 @@ def handle_update(id):
                 payload['instructions'].append(value.replace("'","''"))
             elif 'cook_time' in key:
                 payload['cook_time'] = value.replace("'","''")
-        res = requests.post(f'http://api.ethanshealey.com/recipes/{id}', json=payload)
+        headers = {
+            'Authorization': 'Bearer ' + os.environ['TOKEN']
+        }
+        res = requests.post(f'http://api.ethanshealey.com/recipes/{id}', json=payload, headers=headers)
     return redirect(url_for('index'))
 
 @app.route('/handle_upload', methods=['GET', 'POST'])
@@ -107,7 +110,10 @@ def handle_upload():
             elif 'cook_time' in key:
                 payload['cook_time'] = value.replace("'","''")
 
-        res = requests.post('http://api.ethanshealey.com/recipes', json=payload)
+        headers = {
+            'Authorization': 'Bearer ' + os.environ['TOKEN']
+        }
+        res = requests.post('http://api.ethanshealey.com/recipes', json=payload, headers=headers)
     return redirect(url_for('index'))
 
 @app.route('/login', methods=['GET', 'POST'])
