@@ -63,7 +63,10 @@ def update(id):
 @app.route('/recipe/delete/<id>')
 @login_required
 def delete(id):
-    res = requests.delete(f"http://api.ethanshealey.com/recipes/{id}")
+    headers = {
+        'Authorization': os.environ['TOKEN']
+    }
+    res = requests.delete(f"http://api.ethanshealey.com/recipes/{id}", headers=headers)
     return redirect(url_for('index'))
 
 @app.route('/upload')
