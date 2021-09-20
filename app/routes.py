@@ -10,10 +10,15 @@ import requests, datetime, os
 @app.route('/')
 def index():
     res = requests.get("http://api.ethanshealey.com/recipes")
-    data = res.json()
-    data.sort(key = lambda x: datetime.datetime.strptime(x['date_modified'], '%Y-%m-%d'))
-    return render_template('index.html', title='Cooking', data=data[::-1])
-
+    try:
+        data = res.json()
+    except: 
+        pass
+    else:
+        data.sort(key = lambda x: datetime.datetime.strptime(x['date_modified'], '%Y-%m-%d'))
+        return render_template('index.html', title='Cooking', data=data[::-1])
+    return 'Uh oh! It appears my API has ran out of Heroku free dyno hours, I\'m sorry for the inconvenience. Please stop by next month!'
+    
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     banner = 'bg' + str(randint(1,9)) + '.jpg'
